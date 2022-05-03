@@ -1,0 +1,25 @@
+JavaFx
+
+Harjutustunniks vajalik kood asub: https://bitbucket.org/mkalmo/icd0019fx
+
+Kirjutage JavaFx rakendus, mis võimaldab otsimist mitmest pdf failist korraga.
+
+Rakendusel on sisestuskast otsifraasi jaoks, otsingu nupp, ja tulemuste vaade.
+
+Otsingu tulemustes peaks näitama, millises failis ja millisel lehlel 
+antud fraas esines.
+
+Otsingu tulemuse reale klikateas peaks avanema brauser konkreetse failiga.
+
+Pdf-i avamiseks brauseris kirjutage aadressiks: file://<täielik tee failini>#page=<lehekülje number>
+
+Pdf failist info otsimiseks saab kasutada teeki PdfBox.
+
+Klassis pdf.CoreLogic on mõned abifunktsioonid, mis omakorda kasutavad PdfBox 
+teeki. Klassi CoreLogic kasutamise näide on klassis sample.CoreLogicUsageExample.
+
+Klassis sample.Sample on JavaFx näidisrakendust, milles on näidatud, 
+kuidas kasutada elemente (nupud, sisestuskastid, jne), mida rakenduse 
+tegemisel võiks vaja minna.
+
+Seletused ja lahendused: https://youtu.be/jUWnKlo5Qvw

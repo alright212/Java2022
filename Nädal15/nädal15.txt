@@ -1,0 +1,64 @@
+Objektorienteeritud disain
+
+Kloonige https://bitbucket.org/mkalmo/icd0019oodesign repo ja importige see IDE-sse.
+
+Meil on rakendus, mis saadab kliendile tellimuse sisestamisel teate arve 
+koostamisest. Klient määrab tellimust koostades, mis kujul ta teadet 
+soovib (nt. sms, email) ja süsteem koostab vastavalt sellele sobiva teate 
+ja saadab selle välja. Erinevates suhtluskanalites on pisut erinev teade.
+
+Praegu on süsteem monoliitne, mis võib põhjustada probleeme koodi muutmisel.
+
+- Kui soovime lisada uut suhtluskanalit, peame muutma kogu süsteemi.
+- Kui soovime muuta teateid, peame muutma kogu süsteemi.
+- Kui süsteemiga töötavad korraga mitu arendajat, muudavad nad sama faili,
+  mis toob suure tõenäosusega kaasa konflikte koodi repositooriumisse
+  salvestamisel.
+- Koodist võib olla raskem aru saada, kui kõik on ühes fails koos.
+
+Konkreetne kood on vaid 100 rida pikk ja nimetatud probleemid tõenäoliselt 
+siin ei avalduks. Samas võiks kergesti ette kujutada näidet, kus meil on 
+rohkem suhtluskanaleid, keerulisemad sõnumid ja seega oluliselt rohkem koodi.
+
+Teie ülesanne on see süsteem osadeks jagada.
+
+1. Alustada võiks sellest, et aru saada, kuidas olemasolev süsteem töötab.
+   Esmalt võiks koodi lihtsalt käima panna.
+   
+   Koodi käivitamiseks on klass MainForMonolith.java.
+   
+   Kanalite nimed on "sms" ja "email".
+   
+2. Tõstke teate koostamise loogika eraldi klassidesse EmailInvoiceComposer.java 
+   ja SmsInvoiceComposer.java. Kuna neil on pisut sama koodi, võiks 
+   nendel olla ühine ülemklass.
+
+   Koodi testimseks on klass MainForComposer.java.
+
+3. Tõstke erinevate sõnumit saatmise loogika eraldi klassidesse 
+   (SmvInvoiceSender.java ja EmailInvoiceSender.java). 
+
+   meetod sendInvoiceMessage(order); kasutab sõnumi koostamiseks eelmise 
+   punktis tehtud sõnumi koostamise klasse.
+
+   Koodi testimseks on klass MainForMessageSender.java.
+   
+   NB! Tõenäoliselt oleks parem disain selline, et sõnumi saatja ei tegele 
+       sõnumi koostamisega aga lihtsuse mõttes on selline sõltuvus siia 
+       sisse jäätud.
+   
+4. Kirjutage lõpuni klass OrderNotifier.java. OrderNotifier tüüpi 
+   objektile on võimalik registreerida sõnumite saatjaid erinevate 
+   kanalite jaoks. 
+   
+   Kui saatjad on registreeritud, siis käib teate saatmine järgmiselt:
+   
+   notifier.notifyAbout(order);
+   
+   Meetod vaatab tellimuse pealt, mis on soovitud suhtluskanal, 
+   valib selle põhjal registreeritud kanalite hulgast sobiva ja saadab 
+   selle abil teate.   
+
+   Koodi testimseks on klass MainForNotifier.java.
+
+Lahendused: https://youtu.be/74fZdk7UY0k

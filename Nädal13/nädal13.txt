@@ -1,0 +1,174 @@
+Reflection
+
+Harjutustunniks vajalik kood asub: https://bitbucket.org/mkalmo/icd0019reflection
+
+1) Eesmärk on kirjutada klass Serializer, mis teisendab objektis oleva info 
+   teksti kujule, et selle info saaks näiteks faili salvestada. Lisaks peaks 
+   klass Serializer võimaldama teksti kujul info objektiks tagasi teisendada.
+   
+   Selline funktsionaalsus oli ka polümorfismi teema iseseisvas ülesandes. Sealse lahenduse
+   puudus oli, et tekstiks teisendamise kood oli iga klassi asString() meetodis.
+   Seega uue klassi lisamisel peaks mõtlema ka sellele, mis kujul seda salvestada.
+   
+   Klass Serializer peaks põhinema refleksioonil ja seega olema üldine 
+   lahendus, mistahes klasside teksti kujule ja tagasi teisendamiseks.
+   
+   Kui meil on klass
+   
+       public class Post {
+           private String title = "Post 1";
+           private String text = "Post text";
+           private int replyCount = 4;
+       }
+   
+   siis sellest klassist tehtud objekti tekstiks teisendamisel peaksime saama stringi:
+   
+   "title:Post 1|content:Post text|replyCount:4".
+   
+   Saadud stringi tagasi teisendamisel peaksime saama objekti, mille väljadel 
+   on samad väärtused, mis esialgselt objektil.
+   
+   Klassis Main.java on näide Serializer klassi kasutamise kohta.
+   
+   Paketis samples on näited Java refleksiooni kasutamise kohta, mille põhjal 
+   peaks olema võimalik see ülesanne ära lahendada.
+   
+   a. Meetod serialize() võtab sisse objekti, küsib selle objekti väljad,
+      küsib iga välja nime ja väärtuse ja tagastab teksti kujul: 
+         <välja nimi>:<välja väärtus>|<välja nimi>:...
+   
+   b. Meetod deserialize() võtab sisse teksti kujul info ja lisaks ka tüübi 
+      parameetri, et ta teaks, mis tüüpi objektiks see tekst teisendada.
+   
+      Tüübi info põhjal tehakse uus objekt ja tekstist otsitakse igale 
+      väljale vastav väärtus.
+      
+   c. Lisage klassile Post int tüüpi väli replyCount. Nüüd peate muutma ka 
+      deserialize() meetodit, et vastav väärtus stringist numbriks teisendada.
+      Millise välja väärtust on vaja teisendada saate teada nii: 
+         if (field.getType() == int.class) { ...
+      
+   d. Tehke nii, et oleks võimalik märgistada need väljad, mida soovime salvestada.
+      Võimalik, et klassil on mõningaid välju, mis on ajutise iseloomuga 
+      ja neid ei ole vaja salvestada.
+      
+      Selleks tehke annotatsioon @Stored. Kui väli on selle annotatsiooniga
+      märgistatud, siis see salvestatakse muidu mitte.
+      
+   e. Seni oli tekstis välja nimi täpselt sama, mis koodis. Mõningatel 
+      juhtudel võime soovida, et see nii ei oleks.
+      
+      Koodis peaksid välja nimed vastama Java nimetamise tavadele aga tekstis 
+      võime soovida asju teiste tavade järgi nimetada. See on üsna tavaline 
+      kui soovime info teksti faili asemel andmebaasi salvestada.
+      
+      Tehke nii, et oleks võimalik ise määrata, millise nimega väli tekstis on.
+      Välja nimi peaks olema määratud annotatsiooni parameetriga.
+      
+      Näiteks: @Stored("post-title").
+   
+   f. Kui teisendame objekti tekstiks, siis on selles kaks erilise tähendusega 
+      sümbolit: ";" ja "|".
+      
+      Kui selline sümbol peaks esinema mõne välja väärtuses, siis ei suuda 
+      deserialize() meetod vahet teha tegu on eraldajaga või lihtsalt välja 
+      väärtusega.
+      
+      Täiendage serialize() meetodit nii, et see asendaks võimalikud ";" ja 
+      "|" sümbolid mingi muu väärtusega. Meetod deserialize() peaks omakorda
+      teistpidi asenduse tegema. Arvestage ka sellega, et mis iganes väärtuse 
+      tee asendamiseks valite, võib see omakorda probleeme tekitada, kui 
+      see juhtub välja väärtuses olema.
+   
+      Test ootab järgmis asendusi: 
+      
+      % -> %25
+      % -> %3a
+      | -> %7c
+   
+2. Kirjutage lihtne üksuste testide käivitamise rakendus.
+
+   Kui rakendusele ette anda testide klassi nimi teksti kujul (näiteks "mypackage.MyTests"),
+   siis peaks see vaastava klassi laadima ja käivitama kõik meetodid, mis on märgistatud 
+   annotatsiooniga @MyTest.
+   
+   Rakendus peaks ka arvet pidama, millised testid õnnestusid ja millised mitte.
+   
+   Õnnestumise ainuke kriteerium on see, et test ei viska erindit.
+   
+   Rakendus peaks väljastama tulemused teksti kujul:
+   
+   "õnnestunudTestMeetodiNimi() - OK
+    ebaõnnestunudTestMeetodiNimi() - FAILED ..."
+
+  Ette on antud klass reflection.tester.TestRunner ja oodatud käitumist 
+  kirjeldavad tetid klassist reflection.tester.TestRunnerTests.
+
+  Märkused
+  
+  Annotatsioonist @MyTest on midagi puudu, mille peate juurde lisama.
+  Klassis reflection.tester.Examples on näited klassi laadimse ja klasside võrdlemise kohta.
+  PMD stiilikontrolli reegel "JUnit4TestShouldUseTestAnnotation" on testimissüsteemis väljalülitatud.  
+      
+3. Tõstke kõik failid, mis on kataloogis src/reflection oma 
+   Bitbucket-i reposse (icd0019) kataloogi src/reflection.
+    
+   Veenduge, et testid klassist reflection.TestSuite lähevad läbi.
+   
+   Commit-ige muudatused ja push-ige need Bitbucket-isse. 
+   
+   Lisage commit-ile tag ex12.
+   
+4. Kui see ülesanne jääb tegemata, siis saate maksimaalse viie punkti 
+   asemel neli. Seega selle korra ülesanded loetakse esitatuks ka ilma 
+   selleta. Kui see jääb tegemata saate lihtsalt ühe punkti vähem.
+
+   DNA molekulis on geneetiline info kodeeritud nukleiinhapete järjestusega.
+   
+   Infot kodeerivad elemendid on adeniin (A), guaniin (G), tsütosiin (C) ja tümiin (T).
+   
+   Seega DNA molekulis olevat infot võiks lihtsustatult kujutada sõnena
+   mis koosneb tähtedest A, B, C ja T.
+   
+   Näiteks: TGAGATTATTCGCCTCAGCCGTCAGAAGATACCCAGCTGCAGTCGAA...
+   
+   Meie ülesanne on leida kahe erineva sellise jada seest kattuvad osad.
+   
+   Näiteks:
+     a) TGAGATTATTCGCCT...
+     b) GATTATTCTCGC...
+   
+     a ja b kattuv osa on ATTATTC (ja muud lühemad osad).
+     
+   Kui rakendusele ette anda kaks jada ja minimaalne kattuvuse pikkus, siis
+   peaks see kõik sellise pikkusega kattuvused leidma.
+   
+   Praktikas esineb sellises infos ka vigu. Erinevatel põhjustel võib olla 
+   mõni täht vahetatud mõne teise vastu.
+   
+   Näiteks:
+     a) TGAGACTATTCGCCT...
+     b) TGAGATTATTCGCCT...
+     
+   Antud näites on sõned muus osas kattuvad aga 6. sümbol on erinev.
+   Sellise kattuvuse tahaksime siiski leida.
+   
+   Seega peaks rakendus mõningaid vigu mitte arvestama. Rakendusele peaks 
+   saama ette anda vea pikkuse (antud näites üks element). Seega kui meil on 
+   kõrvuti kaks kattuvad jada ja nende vahele jäävad mõned mitte kattuvad märgid, 
+   peaks need jadad üheks tükiks lugema.
+   
+   Leitud vastuses peaks olema selline järjestus, mis oli esimeses jadas.
+   
+   Seega TGAGACTATTCGCCT ja TGAGATTATTCGCCT tuleks lugeda kattuvaks ja kattuv 
+   osa on TGAGACTATTCGCCT. Kuues sümbol on C nagu esimeses, mitte T nagu teises.
+   
+   Testides on mõned lihtsad näited lisaks toodud.
+   
+   Tõstke kõik failid, mis on kataloogis src/bonus/dna oma Bitbucket-i 
+   reposse kataloogi src/bonus/dna.
+   
+   Töö märgistage tag-iga ex12a.
+
+
+Seletused (1, 2) ja lahendused (1): https://youtu.be/Xxt-YU3KYRE
