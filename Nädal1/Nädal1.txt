@@ -1,0 +1,170 @@
+Harjutustund 1
+
+1. Kui teete tööd kooli arvutis, siis jätke see punkt vahele.
+   
+   Paigaldage oma arvutisse Java.
+
+   Windows: https://www.youtube.com/watch?v=DjFEFOXfO6g
+   
+   Mac:
+      Avage terminal ja käivitage käsk
+      
+      > curl -s "https://get.sdkman.io" | bash
+      
+      Sulgege terminal, avage uuesti ja käivitage käsk
+      
+      > sdk install java 17.0.2-open
+      
+     Kontrollige, kas Java on korrektselt paigaldatud
+       
+     > java --version
+     > javac --version
+     
+     Mõlemad käsud peavad näitama, et java versioon on 17.
+      
+2. Selle faili lõpus on viis Java koodi lõiku.
+
+   Kompileerige need lõigud käsurealt.
+   
+   Kõik need lõigud on vigased ja ülesande eesmärk on kompilaatori väljundi 
+   tõlgenamine ja vigade parandamine.
+   
+   Javas on nõutud, et ühes fails on vaid üks klass ja faili nimi läheb 
+   selle klassi nimega kokku. Seega A.java, B.java jne.
+
+   Kompileerimiseks on käsk
+   
+     > javac A.java
+
+3. Paigaldage oma arvutisse IDEA (https://www.jetbrains.com/idea/download/).
+
+   Litsentsi saate: https://www.jetbrains.com/shop/eform/students
+
+4. Looge Bitbucket-i (bitbucket.org) konto, kui Teil seda veel pole.
+
+5. Importige repositoorium https://bitbucket.org/mkalmo/icd0019seed
+   andes uuele repole nimeks icd0019
+
+   NB! Nimi peab olema icd0019, mitte icd0019seed.
+   NB! Repositoorium peab olema privaatne.
+
+6. Genereerige ssh võti ja lisage see Bitbucket-isse
+
+   Käsureal kirjutage käsk
+   
+   > ssh-keygen
+   
+   Kõik valikud jäävad vaikimisi valikud (vajutage enter).  
+   
+   Nüüd on kodukataloogis (nt. c:/Users/Mari/) olevas kataloogis .ssh on fail nimega id_rsa.pub.
+   
+   Olles Bitbucket-isse sisse loginud valige alt vastakult nime initsiaalidega 
+   menüüst ("your profile and settings") "Personal settings" -> "SSH keys" -> "Add key"
+   
+   Label: mida iganes
+   Key: kopeerige faili id_rsa.pub sisu.
+
+7. Kloonige loodud repo oma arvutisse.
+   
+   git clone git@bitbucket.org:<teie Bitbucket-i kasutajanimi>/icd0019
+   
+8. Avage projekt IntelliJ IDEA-s: File -> Open -> leidke kettalt 
+   kloonitud kataloog icd0019
+
+9. Projektis icd0019 on failid src/intro/Program.java ja src/intro/Examples.java.
+
+   Kirjutage faili Program.java meetod, mis arvutab nullidest ja ühtedest 
+   koosnevast sõnest numbrilise väärtuse ning meetod, mis arvutab numbrilisest 
+   väärtusest sõne.
+   
+   asDecimal("11001101") on 205
+   
+   asString(205) on "11001101"
+   
+   Kood ei pea toetama suuremaid numbreid kui 255.
+   
+   Failis Examples.java on mõnede Java konstruktsioonide näited, millest
+   peaks piisama antud ülesande lahendamiseks.
+
+10. Commit-ige tehtud kood oma reposse.
+
+11. Proovige teha oma reposse konflikt.
+   Bitbucket-i keskonna kadu on võimalik faile ka muuta. Muutke mõnda 
+   faili või tehke mõni uus fail ja salvestage muudatused (tekkis uus commit). 
+   Muutke lokaalses arvutis sama faili. Commit-ige muudatused. Proovige 
+   muudatusi Bitbucket-isse push-ida. Push-imine peaks ebaõnnestuma.
+   Lahendage konflikt ja push-ige muudatused.
+   
+12. Vahest võib juhtuda, et kohaliku repoga on asjad nii hullud, et te 
+   ei suuda konflikte lahendada. Sellisel juhul võite lihtsalt 
+   kohaliku repo ära kustutada ja Bitbucket-ist viimase 
+   seisu alla tõmmata (git clone https://bitbucket.org/<teie kasutaja>/icd0019). 
+   Kui kohalikus repos oli olulisi, mida Bitbucket-is ei ole, siis kustutamise 
+   asemel nimetage repo ümber.
+
+13. Moodle lehel info ülesannete esitamise kohta. Esitage selle põhjal 
+    esimene ülesanne.
+
+
+Seletused ja lahendused: https://youtu.be/bUPLIaUoBYs
+
+########################################################################
+
+public class A {
+    public static void main(String[] args) {
+        int x = 1
+    }
+}
+
+########################################################################
+
+public class B {
+
+    public static void main(String[] args) {
+
+        int x = 1;
+
+        x = "Hello";
+    }
+}
+
+########################################################################
+
+public class C {
+
+    public static void main(String[] args) {
+        sayhello();
+    }
+
+    public static void sayHello() {
+        System.out.println("Hello!");
+    }
+}
+
+########################################################################
+
+public class D {
+
+    public static void main(String[] args) {
+        greet();
+    }
+
+    public static void greet(String greeting) {
+        System.out.println(greeting);
+    }
+}
+
+########################################################################
+
+public class E {
+
+    public static void main(String[] args) {
+    if (1 < 3) {
+    greet();
+    }
+
+    public static void greet(String greeting) { 
+    System.out.println(greeting); }
+}
+
+########################################################################
